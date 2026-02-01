@@ -32,7 +32,7 @@ if [ $instance -eq "frontend" ]; then
     fi
 echo "IP Address: $IP"
 aws route53 change-resource-record-sets \
-    --hosted-zone-id $ZONEID \
+    --hosted-zone-id $ZONEID 
     --change-batch '
 {
   "Comment": "Update A record",
