@@ -17,7 +17,7 @@ do
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
     --query 'Instances[0].InstanceId' \
     --output text)
-if [ $instance -eq "frontend" ]; then
+if [ $instance == "frontend" ]; then
              IP=$(aws ec2 describe-instances \
                      --instance-ids $INSTANCE_ID \
                      --query 'Reservations[].Instances[].PublicIpAddress' \
@@ -32,7 +32,7 @@ if [ $instance -eq "frontend" ]; then
     fi
 echo "IP Address: $IP"
 aws route53 change-resource-record-sets \
-    --hosted-zone-id $ZONEID 
+    --hosted-zone-id $ZONEID \
     --change-batch '
 {
   "Comment": "Update A record",
@@ -53,7 +53,7 @@ aws route53 change-resource-record-sets \
   ]
 }
 '
-echo "Record updated for $INSTANCE"
+echo "Record updated for $instance"
 
 done
 
