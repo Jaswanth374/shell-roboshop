@@ -4,7 +4,6 @@
 SG_ID=sg-0fd437546c9954eac
 AMI_ID=ami-0220d79f3f480ecf5
 INST_TYPE=t3.micro
-REGION=us-east-1
 ZONEID=Z07306682ZX5MBM0WBCUJ
 DOMAINNAME=jaswanthdevops.online
 # Run the instance creation command
@@ -15,7 +14,6 @@ do
     --image-id $AMI_ID \
     --instance-type $INST_TYPE \
     --security-group-ids $SG_ID \
-    --region $REGION \
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' \
     --query 'Instances[0].InstanceId' \
     --output text)
