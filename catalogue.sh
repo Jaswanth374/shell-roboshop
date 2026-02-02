@@ -49,11 +49,8 @@ VALIDATE $? "Creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip  &>>$LOGS_FILE
 VALIDATE $? "Downloading catalogue code"
 
-cd /app
+cd /app &>>$LOGS_FILE
 VALIDATE $? "Moving to app directory"
-
-rm -rf /app/*
-VALIDATE $? "Removing existing code"
 
 unzip /tmp/catalogue.zip &>>$LOGS_FILE
 VALIDATE $? "Uzip catalogue code"
@@ -69,10 +66,12 @@ systemctl enable catalogue  &>>$LOGS_FILE
 systemctl start catalogue
 VALIDATE $? "Starting and enabling catalogue"
 
-cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGS_FILE
+VALIDATE $? "Copying the mongo.repo"
 dnf install mongodb-mongosh -y &>>$LOGS_FILE
+VALIDATE $? "Install client Mongod in catalogue service"
 
-INDEX=$(mongosh --host $MONGODB_HOST --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+INDEX=$(mongosh --host $MONGODB_HOST --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")') &>>$LOGS_FILE
 
 if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js
@@ -81,5 +80,5 @@ else
     echo -e "Products already loaded ... $Y SKIPPING $N"
 fi
 
-systemctl restart catalogue
+systemctl restart catalogue &>>$LOGS_FILE
 VALIDATE $? "Restarting catalogue"
