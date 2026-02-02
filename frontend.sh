@@ -7,7 +7,7 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-NGINX="/etc/nginx/nginx.conf"
+SCRIPT_DIR=$PWD
 
 if [ $USERID -ne 0 ]; then
     echo -e "$R Please run this script with root user access $N" | tee -a $LOGS_FILE
@@ -51,7 +51,7 @@ unzip /tmp/frontend.zip &>>$LOGS_FILE
 VALIDATE $? "Extract the files from tmp to default page"
 
 
-cp /home/ec2-user/robo-shop/nginx.conf /etc/nginx/nginx.conf &>>$LOGS_FILE
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOGS_FILE
 VALIDATE $? "Copying the nginx.conf"
 
 systemctl restart nginx &>>$LOGS_FILE
