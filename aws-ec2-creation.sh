@@ -22,7 +22,7 @@ if [ $instance == "frontend" ]; then
                      --instance-ids $INSTANCE_ID \
                      --query 'Reservations[].Instances[].PublicIpAddress' \
                      --output text)
-            RECORD_NM="$instance.$DOMAINNAME" #Public domain name
+            RECORD_NM="$DOMAINNAME" #Public domain name
     else
              IP=$(aws ec2 describe-instances \
                      --instance-ids $INSTANCE_ID \
